@@ -167,8 +167,16 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+b exec firefox
 bindsym $mod+c exec code
 
-# Increase brightness
+# gaps between windows
+set $default_gaps 10
+gaps outer $default_gaps 
+#gaps outer current plus $default_gaps
+# man gaps
+# gaps inner current plus 5
+# gaps outer current plus 5
 
+
+# Increase brightness
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 # Decrease brightness
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
