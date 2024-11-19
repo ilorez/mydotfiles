@@ -169,7 +169,7 @@ bindsym $mod+b exec firefox
 bindsym $mod+c exec code
 
 # gaps between windows
-set $default_gaps 3
+set $default_gaps 1
 gaps inner $default_gaps 
 #gaps outer current plus $default_gaps
 
