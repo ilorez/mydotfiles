@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright 2025 by ilorez
+# Shows memory usage with warning coloring
+
+THRESHOLD_PCT="${1:-90}"  # Default 90% usage warning
+
+free -m | awk -v threshold="$THRESHOLD_PCT" '
+/Mem/ {
+    used_mb = $3
+    total_mb = $2
+    pct = (used_mb / total_mb) * 100
+    
+    # Main output
+    printf " %dM/%dM (%.1f%%)\n", used_mb, total_mb, pct
+    
+    # Warning coloring
+    if (pct >= threshold) {
+        print ""  # bg color
+        print "#FF3333"  # Text color
+    }
+}'

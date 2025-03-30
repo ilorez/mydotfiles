@@ -1,0 +1,41 @@
+#!/bin/bash
+# Copyright 2025 by ilorez
+# Shows battery status with dynamic icons and coloring
+
+BAT_PATH="/sys/class/power_supply/BAT1"
+[ -d "$BAT_PATH" ] || exit 0  # Exit if no battery
+
+capacity=$(cat "$BAT_PATH/capacity")
+status=$(cat "$BAT_PATH/status")
+
+# Icon selection
+if [ "$status" = "Charging" ]; then
+    icon=""
+elif [ "$status" = "Full" ]; then
+    icon=""
+else
+    case $capacity in
+        8[0-9]|9[0-9]|100) icon="" ;;
+        6[0-9]|7[0-9])     icon="" ;;
+        4[0-9]|5[0-9])     icon="" ;;
+        2[0-9]|3[0-9])     icon="" ;;
+        *)                 icon="" ;;
+    esac
+fi
+
+# Coloring
+if [ "$status" = "Charging" ]; then
+    color="#00FF00"  # Green
+elif [ "$capacity" -ge 80 ]; then
+    color="#00FF00"  # Green
+elif [ "$capacity" -ge 60 ]; then
+    color="#FFFF00"  # Yellow
+elif [ "$capacity" -ge 40 ]; then
+    color="#FFA500"  # Orange
+else
+    color="#FF0000"  # Red
+fi
+# Output
+echo -e "<span foreground='$color'>$icon $capacity%</span>"
+# End of script
+

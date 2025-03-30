@@ -1,6 +1,6 @@
 [general]
 import = [
-    "~/.config/alacritty/themes/themes/aafterglow.toml"
+  #    "~/.config/alacritty/themes/themes/aafterglow.toml"
 ]
 
 [window]

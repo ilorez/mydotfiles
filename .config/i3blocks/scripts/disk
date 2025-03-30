@@ -1,0 +1,40 @@
+#!/bin/bash
+# All Copyright 2025 by ilorez
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# example usage: ./disk.sh / 15
+# This script checks the available disk space on a specified mount point
+# and compares it to a specified threshold in GB.
+# It prints the disk usage information and highlights it in red if
+
+# Github repu
+# github.com/ilorez/dotfiles
+#   src: .config/i3blocks/scripts/disk
+
+MOUNT_POINT="${1:-/}"
+THRESHOLD_GB="${2:-15}"
+
+LC_ALL=C df -h "$MOUNT_POINT" | awk -v threshold="$THRESHOLD_GB" '
+/\/dev\// {
+    # Extract available space in GB
+    split($4, parts, /[A-Za-z]/)
+    avail_num = parts[1]
+    unit = substr($4, length(avail_num)+1)
+    
+    if (unit == "T") avail_num *= 1024
+    if (unit == "M") avail_num /= 1024
+    if (unit == "K") avail_num /= (1024*1024)
+    ## print avail_num and threshold
+
+
+    # Print disk info
+    printf " %s/%s (%s)\n", $3, $2, $5
+    # Warning if below threshold
+    if (avail_num < threshold) {
+        print ""   # Background color
+        print "#FF3333"  # Text color
+    }
+}'

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Get WiFi interface name
+interface=$(iw dev | awk '$1=="Interface"{print $2}')
+
+if [ -z "$interface" ]; then
+    echo "睊 No WiFi"
+    exit 0
+fi
+
+# Check connection status
+if iw dev "$interface" link | grep -q "Connected"; then
+    ssid=$(iwgetid -r)
+    signal=$(awk '/wl/ {print 10*$3}' /proc/net/wireless 2>/dev/null | cut -d '.' -f 1)
+    
+    # Signal strength icons
+    if [ "$signal" -ge 75 ]; then
+        icon=""
+    elif [ "$signal" -ge 50 ]; then
+        icon=""
+    elif [ "$signal" -ge 25 ]; then
+        icon=""
+    else
+        icon=""
+    fi
+    
+    echo "$icon  $ssid"
+else
+    echo "睊 Disconnected"
+fi
+
+# Click handling
+case $BLOCK_BUTTON in
+    1) nm-connection-editor ;;  # Left click
+    3) nmtui ;;                 # Right click for terminal UI
+esac

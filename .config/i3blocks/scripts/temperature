@@ -1,0 +1,22 @@
+#!/bin/bash
+# Copyright 2025 by ilorez
+# Shows CPU temperature with critical warning
+
+THRESHOLD_C="${1:-75}"  # Default 80°C warning
+
+sensors | awk -v threshold="$THRESHOLD_C" '
+/Tdie|Core 0/ {
+    # Extract temperature value
+    temp = $3
+    gsub(/[^0-9.]/, "", temp)
+    
+    # Main output
+    printf " %.0f°C\n", temp
+    
+    # Critical temperature warning
+    if (temp >= threshold) {
+        print ""  # bg color
+        print "#FF3333"  # Text color
+    }
+    exit  # Stop after first match
+}'

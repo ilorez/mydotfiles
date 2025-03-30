@@ -1,0 +1,21 @@
+#!/bin/bash
+
+volume=$(pamixer --get-volume)
+muted=$(pamixer --get-mute)
+
+if [ "$muted" = "true" ]; then
+    echo " Muted"
+elif [ "$volume" -eq 0 ]; then
+    echo " 0%"
+elif [ "$volume" -lt 50 ]; then
+    echo " $volume%"
+else
+    echo " $volume%"
+fi
+
+case $BLOCK_BUTTON in
+    1) pavucontrol ;;  # Left click
+    3) pamixer -t ;;   # Right click toggle mute
+    4) pamixer -i 5 ;; # Scroll up
+    5) pamixer -d 5 ;; # Scroll down
+esac

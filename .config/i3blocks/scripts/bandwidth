@@ -1,0 +1,13 @@
+#!/bin/bash
+
+interface=$(ip route | awk '/^default/ {print $5}')
+rx_old=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+tx_old=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+sleep 1
+rx_new=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+tx_new=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+
+rx=$(( ($rx_new - $rx_old) / 1024 ))
+tx=$(( ($tx_new - $tx_old) / 1024 ))
+
+printf " %sK  %sK\n" $rx $tx

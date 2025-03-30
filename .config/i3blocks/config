@@ -1,0 +1,167 @@
+# i3blocks config file changed for EndeavourOS-i3 setup
+
+# source is available here:
+# cheatsheet for icon fonts used on the block-bar:
+# https://fontawesome.com/icons?d=gallery&m=free
+
+# --> to update this run the following command:
+
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+
+
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+separator=false
+markup=pango
+
+[browser]
+full_text= 
+#color=#ff6611
+command=firefox
+
+[terminal]
+full_text= 
+#color=#ffcc00
+command=alacritty
+
+#[mattermost]
+#full_text= 
+#color=#0058CC
+#command=mattermost-desktop
+
+#[spotify]
+#full_text= 
+#color=#1DB954
+#command=spotify
+
+[files]
+full_text= 
+#color=#3daee9
+command=nautilus ~/
+
+#[mail]
+#full_text= 
+#color=#dbcb75
+#command=thunderbird
+
+[simple-2]
+full_text=: :
+color=#717171
+
+[bandwidth]
+command=~/.config/i3blocks/scripts/bandwidth
+interval=5
+
+[wifi]
+full_text=  
+label= 
+command=~/.config/i3blocks/scripts/wifi
+interval=10
+color=#ffffff
+
+[bluetooth]
+full_text= 
+label= 
+command=~/.config/i3blocks/scripts/bluetooth
+interval=10
+color=#ffffff
+
+# Disk usage
+#
+# The directory defaults to $HOME if the instance is not specified.
+# The script may be called with a optional argument to set the alert
+# (defaults to 10 for 10%).
+[disk]
+label=
+instance=/
+command=~/.config/i3blocks/scripts/disk
+interval=30
+
+# Memory usage
+#
+# The type defaults to "mem" if the instance is not specified.
+[memory]
+label=
+command=~/.config/i3blocks/scripts/memory
+interval=2
+
+[cpu_usage]
+label=
+command=~/.config/i3blocks/scripts/cpu_usage
+#min_width=CPU: 100.00%
+interval=2
+
+[CPU-temperature]
+full_text=
+label=
+command=~/.config/i3blocks/scripts/temperature
+interval=30
+
+# showing name of connected network (enable for wifi use)
+#[net]
+#label=
+#command=echo "$(LANG=C nmcli d | grep connected  | awk '{print $4}')"
+#interval=30
+#
+# Battery indicator
+#
+# The battery instance defaults to 0.
+[battery]
+command=~/.config/i3blocks/scripts/battery
+full_text=
+interval=1
+# change this to battery-pinebook-pro.sh if you are running on pinebook-pro
+#label=
+#instance=1
+
+[simple-2]
+full_text=: :
+color=#717171
+
+[language]
+full_text=
+command=~/.config/i3blocks/scripts/lang
+interval=1
+signal=1
+
+[volume]
+command=~/.config/i3blocks/scripts/volume
+#full_text=
+instance=Master
+interval=1
+
+#[keybindings]
+#full_text=
+# command=~/.config/i3blocks/scripts/keyhint.sh
+
+[time]
+#label=
+command=date '+%a %d %b %H:%M:%S'
+interval=1
+
+[shutdown_menu]
+full_text=
+command=~/.config/i3blocks/scripts/shutdown_menu -p rofi -c;
+
+[simple-2]
+full_text=: :
+color=#717171

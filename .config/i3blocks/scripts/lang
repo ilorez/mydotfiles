@@ -1,0 +1,87 @@
+#!/bin/bash
+# Copyright 2025 by ilorez
+# Language switcher for EN/AR/MA-AZERTY
+
+# Add this early in the script
+xhost +local:root >/dev/null 2>&1
+
+# Configuration
+LAYOUTS=("us" "ara" "ma")  # Verified layouts
+declare -A LAYOUT_NAMES=(
+    ["us"]="English (US)"
+    ["ara"]="العربية (AR)"
+    ["ma"]="المغرب (AZERTY)"
+)
+
+# Modified layout cycling function
+cycle_layout() {
+    # remove new line from current layout
+    current=$(setxkbmap -query | awk '/layout/ {print $2}' | tr -d '\n')
+    case $current in
+        "us")   new="ara" ;;
+        "ara")  new="ma" ;;
+        "ma")   new="us" ;;
+        *)      new="us"
+    esac
+    setxkbmap -layout "$new"
+    pkill -SIGRTMIN+1 i3blocks
+}
+
+# Handle keyboard shortcut
+if [[ "$1" == "cycle" ]]; then
+    cycle_layout
+    exit 0
+fi
+
+
+# Get current layout index
+current_index() {
+    current=$(setxkbmap -query | awk '/layout/ {print $2}' | tr -d '\n')
+    for i in "${!LAYOUTS[@]}"; do
+        [[ "${LAYOUTS[$i]}" == "$current" ]] && echo $i && return
+    done
+    echo 0
+}
+
+# Handle keyboard shortcut
+if [[ "$1" == "cycle" ]]; then
+    idx=$(current_index)
+    next_idx=$(( (idx + 1) % ${#LAYOUTS[@]} ))
+    setxkbmap -layout "${LAYOUTS[$next_idx]}"
+    pkill -SIGRTMIN+1 i3blocks
+    exit 0
+fi
+
+# Show layout menu
+show_menu() {
+    for code in "${LAYOUTS[@]}"; do
+        printf "%s|%s\n" "$code" "${LAYOUT_NAMES[$code]}"
+    done | rofi -dmenu $ROFI_THEME -p "اختر اللغة:" | cut -d'|' -f1
+}
+
+# Handle GUI clicks (original code)
+case $BLOCK_BUTTON in
+    1)  # Left click - show menu
+        selected=$(show_menu)
+        [ -n "$selected" ] && setxkbmap -layout "$selected"
+        ;;
+    3)  # Right click - cycle layouts
+        idx=$(current_index)
+        next_idx=$(( (idx + 1) % ${#LAYOUTS[@]} ))
+        setxkbmap -layout "${LAYOUTS[$next_idx]}"
+        ;;
+esac
+
+# Display current layout
+layout=$(setxkbmap -query | awk '/layout/ {print $2}')
+case $layout in
+    "us")   icon=" EN" ;;
+    "ara")  icon=" AR" ;;
+    "ma")   icon=" MA" ;;
+    *)      icon=" ??"
+esac
+
+echo "$icon"
+
+# Refresh i3blocks
+pkill -SIGRTMIN+1 i3blocks
