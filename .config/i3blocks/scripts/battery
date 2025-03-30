@@ -2,8 +2,13 @@
 # Copyright 2025 by ilorez
 # Shows battery status with dynamic icons and coloring
 
-BAT_PATH="/sys/class/power_supply/BAT1"
-[ -d "$BAT_PATH" ] || exit 0  # Exit if no battery
+if [ -e "/sys/class/power_supply/BAT0" ]; then
+    BAT_PATH="/sys/class/power_supply/BAT0"
+else
+    BAT_PATH="/sys/class/power_supply/BAT1"
+fi
+
+[ -d "$BAT_PATH" ] ||  exit 0  # Exit if no battery
 
 capacity=$(cat "$BAT_PATH/capacity")
 status=$(cat "$BAT_PATH/status")
