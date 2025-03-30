@@ -73,10 +73,12 @@ case $BLOCK_BUTTON in
 esac
 
 # Display current layout
-layout=$(setxkbmap -query | awk '/layout/ {print $2}')
+# examle us,ara,ma
+# get first layout 
+layout=$(setxkbmap -query | awk '/layout/ {print $2}' | cut -d',' -f1)
 case $layout in
     "us")   icon=" EN" ;;
-    "ara")  icon=" AR" ;;
+    "ara")  icon=" AR" ;;
     "ma")   icon=" MA" ;;
     *)      icon=" ??"
 esac
